@@ -34,7 +34,7 @@ func LoadConfig() *Config {
 	// Загрузка разрешенного origin для CORS
 	corsOrigin := os.Getenv("CORS_ALLOWED_ORIGIN")
 	if corsOrigin == "" {
-		corsOrigin = "http://127.0.0.1:5500" // Значение по умолчанию
+		corsOrigin = "*" // Значение по умолчанию
 		log.Printf("Используется CORS origin по умолчанию: %s", corsOrigin)
 	}
 

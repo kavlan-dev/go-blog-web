@@ -10,8 +10,6 @@ type Config struct {
 	ServerHost        string
 	ServerPort        string
 	CORSAllowedOrigin string
-	AuthUsername      string
-	AuthPassword      string
 }
 
 func LoadConfig() *Config {
@@ -51,8 +49,6 @@ func LoadConfig() *Config {
 		ServerHost:        host,
 		ServerPort:        port,
 		CORSAllowedOrigin: corsOrigin,
-		AuthUsername:      authUsername,
-		AuthPassword:      authPassword,
 	}
 }
 

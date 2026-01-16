@@ -9,6 +9,7 @@ type Response map[string]any
 
 type ServicesInterface interface {
 	PostsService
+	UserService
 }
 
 type Handler struct {

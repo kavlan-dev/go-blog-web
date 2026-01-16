@@ -2,12 +2,13 @@ package services
 
 type StorageInterface interface {
 	PostsStorage
+	UsersStorage
 }
 
-type PostService struct {
+type Service struct {
 	storage StorageInterface
 }
 
-func New(storage StorageInterface) *PostService {
-	return &PostService{storage: storage}
+func New(storage StorageInterface) *Service {
+	return &Service{storage: storage}
 }

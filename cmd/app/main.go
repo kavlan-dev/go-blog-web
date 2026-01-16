@@ -21,13 +21,14 @@ func main() {
 	mainMux := http.NewServeMux()
 	mainMux.HandleFunc("GET /health", handler.HealthCheck)
 	mainMux.HandleFunc("GET /api/posts/", handler.GetPostHandler)
+	mainMux.HandleFunc("POST /api/auth/register", handler.CreateUserHandler)
 
 	secureMux := http.NewServeMux()
 	secureMux.HandleFunc("POST /api/secure/posts", handler.CreatePostHandler)
 	secureMux.HandleFunc("PUT /api/secure/posts/", handler.UpdatePostHandler)
 	secureMux.HandleFunc("DELETE /api/secure/posts/", handler.DeletePostHandler)
 
-	secureHandler := middleware.AuthMiddleware(cfg, secureMux)
+	secureHandler := middleware.AuthMiddleware(service, secureMux)
 
 	mainMux.Handle("/api/secure/", secureHandler)
 

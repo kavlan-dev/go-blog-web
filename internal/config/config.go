@@ -10,17 +10,17 @@ import (
 )
 
 type Config struct {
-	Env   string `json:"env,omitempty"` // Окружение может быть local, dev, prod
+	Env   string `json:"env"` // Окружение может быть local, dev, prod
 	Admin struct {
-		Username string `json:"username,omitempty"`
-		Password string `json:"password,omitempty"`
-		Email    string `json:"email,omitempty"`
+		Username string `json:"username"`
+		Password string `json:"password"`
+		Email    string `json:"email"`
 	} `json:"admin"`
 	Server struct {
-		Host string `json:"host,omitempty"`
-		Port uint   `json:"port,omitempty"`
+		Host string `json:"host"`
+		Port uint   `json:"port"`
 	} `json:"server"`
-	CORSAllowedOrigin []string `json:"cors_allowed_origin,omitempty"`
+	CORSAllowedOrigin []string `json:"cors_allowed_origin"`
 }
 
 func LoadConfig() (*Config, error) {

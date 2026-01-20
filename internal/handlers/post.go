@@ -35,6 +35,7 @@ func (h *Handler) CreatePost(w http.ResponseWriter, r *http.Request) {
 	newPost := &models.Post{
 		Title:   req.Title,
 		Content: req.Content,
+		Tags:    req.Tags,
 	}
 
 	if err := h.service.CreatePost(newPost); err != nil {
@@ -149,6 +150,7 @@ func (h *Handler) UpdatePost(w http.ResponseWriter, r *http.Request) {
 	updatePost := &models.Post{
 		Title:   req.Title,
 		Content: req.Content,
+		Tags:    req.Tags,
 	}
 
 	if err := h.service.UpdatePost(uint(id), updatePost); err != nil {

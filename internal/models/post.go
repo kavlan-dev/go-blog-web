@@ -6,17 +6,27 @@ import (
 	"time"
 )
 
+// type Comment struct {
+// 	ID        uint      `json:"id"`
+// 	Content   string    `json:"content"`
+// 	Author    string    `json:"author"`
+// 	CreatedAt time.Time `json:"created_at"`
+// }
+
 type Post struct {
-	ID        uint      `json:"id"`
-	Title     string    `json:"title"`
-	Content   string    `json:"content"`
+	ID      uint     `json:"id"`
+	Title   string   `json:"title"`
+	Content string   `json:"content"`
+	Tags    []string `json:"tags,omitempty"`
+	// Comments  []Comment `json:"comments,omitempty"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 }
 
 type PostRequest struct {
-	Title   string `json:"title"`
-	Content string `json:"content"`
+	Title   string   `json:"title"`
+	Content string   `json:"content"`
+	Tags    []string `json:"tags,omitempty"`
 }
 
 func (p *Post) Validate() error {

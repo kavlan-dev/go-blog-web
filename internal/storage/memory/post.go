@@ -88,6 +88,7 @@ func (s *Storage) UpdatePost(id uint, updatePost *models.Post) error {
 
 	post.Title = updatePost.Title
 	post.Content = updatePost.Content
+	post.Tags = updatePost.Tags
 	post.UpdatedAt = time.Now()
 
 	s.posts[id] = post

@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-type Response map[string]any
+type response map[string]any
 
 type ServicesInterface interface {
 	PostsService
@@ -28,7 +28,7 @@ func New(service ServicesInterface, log *slog.Logger) *Handler {
 func (h *Handler) HealthCheck(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(Response{
+	json.NewEncoder(w).Encode(response{
 		"message": "Сервис работает исправно",
 	})
 }

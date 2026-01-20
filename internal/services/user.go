@@ -51,5 +51,5 @@ func (s *Service) UpdateUser(id uint, updateUser *models.User) error {
 		return err
 	}
 
-	return s.UpdateUser(id, updateUser)
+	return s.storage.UpdateUser(id, updateUser)
 }

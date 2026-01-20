@@ -19,8 +19,8 @@ func main() {
 		return
 	}
 	log := utils.New(cfg.Env)
-	log.Debug("Конфигурация сервиса", slog.Any("config", *cfg))
-	log.Debug("Загрузка cors", slog.Any("Cors", cfg.Cors()))
+	log.Debug("Конфигурация сервиса", slog.Any("config", cfg))
+	log.Debug("Загрузка cors", slog.String("Cors", cfg.Cors()))
 
 	storage := memory.New()
 	service := services.New(storage)
@@ -35,13 +35,13 @@ func main() {
 	mux.HandleFunc("GET /health/", handler.HealthCheck)
 	mux.HandleFunc("GET /api/posts/", handler.Posts)
 	mux.HandleFunc("GET /api/posts/{id}/", handler.PostById)
-	mux.HandleFunc("POST /api/auth/register/", handler.CreateUserHandler)
+	mux.HandleFunc("POST /api/auth/register/", handler.CreateUser)
 
 	mux.HandleFunc("POST /api/posts/", middleware.AuthMiddleware(service, handler.CreatePost))
 
 	mux.HandleFunc("PUT /api/secure/posts/{id}/", middleware.AuthAdminMiddleware(service, handler.UpdatePost))
 	mux.HandleFunc("DELETE /api/secure/posts/{id}/", middleware.AuthAdminMiddleware(service, handler.DeletePost))
-	mux.HandleFunc("PUT /api/secure/users/{id}/", middleware.AuthAdminMiddleware(service, handler.UpdateUserHandler))
+	mux.HandleFunc("PUT /api/secure/users/{id}/", middleware.AuthAdminMiddleware(service, handler.UpdateUser))
 
 	err = http.ListenAndServe(cfg.ServerAddress(), middleware.CORSMiddleware(cfg, mux))
 	if err != nil {

@@ -23,7 +23,7 @@ func (s *Storage) CreateUser(newUser *models.User) error {
 	newUser.ID = s.nextUserId
 	ok := s.isUserUnique(newUser.Username, newUser.Email, newUser.ID)
 	if !ok {
-		return fmt.Errorf("")
+		return fmt.Errorf("пользователь с таким именем или почтой уже существует")
 	}
 
 	newUser.CreatedAt = time.Now()

@@ -1,15 +1,13 @@
 package middleware
 
 import (
-	"go-blog-web/internal/config"
 	"net/http"
 )
 
-func CORSMiddleware(cfg *config.Config, next http.Handler) http.Handler {
+func CORSMiddleware(allowedOrigin string, next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		allowedOrigin := cfg.Cors()
 		if allowedOrigin == "" {
-			allowedOrigin = "*" // Default to allow all if not configured
+			allowedOrigin = "*"
 		}
 		w.Header().Set("Access-Control-Allow-Origin", allowedOrigin)
 		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")

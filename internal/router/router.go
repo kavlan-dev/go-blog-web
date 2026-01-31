@@ -1,8 +1,8 @@
-package routers
+package router
 
 import (
 	"go-blog-web/internal/middleware"
-	"go-blog-web/internal/models"
+	"go-blog-web/internal/model"
 	"net/http"
 )
 
@@ -13,7 +13,7 @@ type handlerInterface interface {
 }
 
 type userService interface {
-	AuthenticateUser(username, password string) (*models.User, error)
+	AuthenticateUser(username, password string) (*model.User, error)
 }
 
 type postHandler interface {
@@ -30,7 +30,7 @@ type userHandler interface {
 	UpdateUser(w http.ResponseWriter, r *http.Request)
 }
 
-func SetupRoutes(handler handlerInterface, service userService) *http.ServeMux {
+func NewRouter(handler handlerInterface, service userService) *http.ServeMux {
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("GET /health", handler.HealthCheck)

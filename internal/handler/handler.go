@@ -1,4 +1,4 @@
-package handlers
+package handler
 
 import (
 	"encoding/json"
@@ -8,17 +8,17 @@ import (
 
 type response map[string]any
 
-type servicesInterface interface {
-	postsService
+type serviceInterface interface {
+	postService
 	userService
 }
 
 type handler struct {
-	service servicesInterface
+	service serviceInterface
 	log     *slog.Logger
 }
 
-func New(service servicesInterface, log *slog.Logger) *handler {
+func NewHandler(service serviceInterface, log *slog.Logger) *handler {
 	return &handler{
 		service: service,
 		log:     log,

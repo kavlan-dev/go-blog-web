@@ -3,11 +3,11 @@ package memory
 import (
 	"errors"
 	"fmt"
-	"go-blog-web/internal/models"
+	"go-blog-web/internal/model"
 	"time"
 )
 
-func (s *storage) CreatePost(newPost *models.Post) error {
+func (s *storage) CreatePost(newPost *model.Post) error {
 	posts := s.FindPosts()
 	s.mu.Lock()
 	defer s.mu.Unlock()
@@ -26,11 +26,11 @@ func (s *storage) CreatePost(newPost *models.Post) error {
 	return nil
 }
 
-func (s *storage) FindPosts() *[]models.Post {
+func (s *storage) FindPosts() *[]model.Post {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
-	allPosts := make([]models.Post, 0, len(s.posts))
+	allPosts := make([]model.Post, 0, len(s.posts))
 	for _, post := range s.posts {
 		allPosts = append(allPosts, *post)
 	}
@@ -38,7 +38,7 @@ func (s *storage) FindPosts() *[]models.Post {
 	return &allPosts
 }
 
-func (s *storage) FindPostById(id uint) (*models.Post, error) {
+func (s *storage) FindPostById(id uint) (*model.Post, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
@@ -50,7 +50,7 @@ func (s *storage) FindPostById(id uint) (*models.Post, error) {
 	return post, nil
 }
 
-func (s *storage) FindPostByTitle(title string) (*models.Post, error) {
+func (s *storage) FindPostByTitle(title string) (*model.Post, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
@@ -63,7 +63,7 @@ func (s *storage) FindPostByTitle(title string) (*models.Post, error) {
 	return nil, fmt.Errorf("запись с заголовком %s не найдена", title)
 }
 
-func (s *storage) UpdatePost(id uint, updatePost *models.Post) error {
+func (s *storage) UpdatePost(id uint, updatePost *model.Post) error {
 	posts := s.FindPosts()
 	s.mu.Lock()
 	defer s.mu.Unlock()

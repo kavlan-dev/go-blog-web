@@ -1,12 +1,12 @@
 package middleware
 
 import (
-	"go-blog-web/internal/models"
+	"go-blog-web/internal/model"
 	"net/http"
 )
 
 type userService interface {
-	AuthenticateUser(username, password string) (*models.User, error)
+	AuthenticateUser(username, password string) (*model.User, error)
 }
 
 func AuthMiddleware(service userService, next http.HandlerFunc) http.HandlerFunc {

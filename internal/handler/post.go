@@ -1,20 +1,20 @@
-package handlers
+package handler
 
 import (
 	"encoding/json"
-	"go-blog-web/internal/models"
+	"go-blog-web/internal/model"
 	"go-blog-web/internal/utils"
 	"log/slog"
 	"net/http"
 	"strconv"
 )
 
-type postsService interface {
-	CreatePost(newPost *models.Post) error
-	AllPosts() *[]models.Post
-	PostByID(id uint) (*models.Post, error)
-	PostByTitle(title string) (*models.Post, error)
-	UpdatePost(id uint, updatePost *models.Post) error
+type postService interface {
+	CreatePost(newPost *model.Post) error
+	AllPosts() *[]model.Post
+	PostByID(id uint) (*model.Post, error)
+	PostByTitle(title string) (*model.Post, error)
+	UpdatePost(id uint, updatePost *model.Post) error
 	DeletePost(id uint) error
 }
 
@@ -25,14 +25,14 @@ func (h *handler) CreatePost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var req models.PostRequest
+	var req model.PostRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		h.log.Error("Ошибка в теле запроса", utils.Err(err))
 		http.Error(w, "некорректный JSON", http.StatusBadRequest)
 		return
 	}
 
-	newPost := &models.Post{
+	newPost := &model.Post{
 		Title:   req.Title,
 		Content: req.Content,
 		Tags:    req.Tags,
@@ -140,14 +140,14 @@ func (h *handler) UpdatePost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var req models.PostRequest
+	var req model.PostRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		h.log.Error("Ошибка в теле запроса", utils.Err(err))
 		http.Error(w, "некорректный JSON", http.StatusBadRequest)
 		return
 	}
 
-	updatePost := &models.Post{
+	updatePost := &model.Post{
 		Title:   req.Title,
 		Content: req.Content,
 		Tags:    req.Tags,

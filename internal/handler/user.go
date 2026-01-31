@@ -1,8 +1,8 @@
-package handlers
+package handler
 
 import (
 	"encoding/json"
-	"go-blog-web/internal/models"
+	"go-blog-web/internal/model"
 	"go-blog-web/internal/utils"
 	"log/slog"
 	"net/http"
@@ -10,8 +10,8 @@ import (
 )
 
 type userService interface {
-	CreateUser(newUser *models.User) error
-	UpdateUser(id uint, updateUser *models.User) error
+	CreateUser(newUser *model.User) error
+	UpdateUser(id uint, updateUser *model.User) error
 }
 
 func (h *handler) CreateUser(w http.ResponseWriter, r *http.Request) {
@@ -21,14 +21,14 @@ func (h *handler) CreateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var req models.RegisterRequest
+	var req model.RegisterRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		h.log.Error("Ошибка в теле запроса", utils.Err(err))
 		http.Error(w, "некорректный JSON", http.StatusBadRequest)
 		return
 	}
 
-	newUser := &models.User{
+	newUser := &model.User{
 		Username: req.Username,
 		Password: req.Password,
 		Email:    req.Email,
@@ -62,14 +62,14 @@ func (h *handler) UpdateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var req models.UpdateUserRequest
+	var req model.UpdateUserRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		h.log.Error("Ошибка в теле запроса", utils.Err(err))
 		http.Error(w, "некорректный JSON", http.StatusBadRequest)
 		return
 	}
 
-	updateUser := &models.User{
+	updateUser := &model.User{
 		Role: req.Role,
 	}
 

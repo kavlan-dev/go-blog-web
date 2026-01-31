@@ -1,20 +1,20 @@
-package services
+package service
 
 import (
 	"encoding/hex"
 	"fmt"
 	"go-blog-web/internal/config"
-	"go-blog-web/internal/models"
+	"go-blog-web/internal/model"
 	"go-blog-web/internal/utils"
 )
 
-type usersStorage interface {
-	CreateUser(user *models.User) error
-	UserByUsername(username string) (*models.User, error)
-	UpdateUser(id uint, updateUser *models.User) error
+type userStorage interface {
+	CreateUser(user *model.User) error
+	UserByUsername(username string) (*model.User, error)
+	UpdateUser(id uint, updateUser *model.User) error
 }
 
-func (s *service) CreateUser(newUser *models.User) error {
+func (s *service) CreateUser(newUser *model.User) error {
 	if err := newUser.Validate(); err != nil {
 		return err
 	}
@@ -24,11 +24,11 @@ func (s *service) CreateUser(newUser *models.User) error {
 	return s.storage.CreateUser(newUser)
 }
 
-func (s *service) userByUsername(username string) (*models.User, error) {
+func (s *service) userByUsername(username string) (*model.User, error) {
 	return s.storage.UserByUsername(username)
 }
 
-func (s *service) AuthenticateUser(username, password string) (*models.User, error) {
+func (s *service) AuthenticateUser(username, password string) (*model.User, error) {
 	user, err := s.userByUsername(username)
 	if err != nil {
 		return nil, err
@@ -56,7 +56,7 @@ func (s *service) AuthenticateUser(username, password string) (*models.User, err
 // Создает первого администратора для последующего использования эндпоинтов доступных только администратору
 // Данные для входа устанавливаются в конфигурационном файле JSON
 func (s *service) CreateFirstAdmin(cfg *config.Config) error {
-	admin := &models.User{
+	admin := &model.User{
 		Username: cfg.Admin.Username,
 		Password: utils.HashPassword(cfg.Admin.Password),
 		Email:    cfg.Admin.Email,
@@ -65,7 +65,7 @@ func (s *service) CreateFirstAdmin(cfg *config.Config) error {
 	return s.storage.CreateUser(admin)
 }
 
-func (s *service) UpdateUser(id uint, updateUser *models.User) error {
+func (s *service) UpdateUser(id uint, updateUser *model.User) error {
 	if err := updateUser.Validate(); err != nil {
 		return err
 	}

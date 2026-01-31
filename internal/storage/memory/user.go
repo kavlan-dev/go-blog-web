@@ -2,15 +2,15 @@ package memory
 
 import (
 	"fmt"
-	"go-blog-web/internal/models"
+	"go-blog-web/internal/model"
 	"time"
 )
 
-func (s *storage) FindUsers() *[]models.User {
+func (s *storage) FindUsers() *[]model.User {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
-	allUsers := make([]models.User, 0, len(s.users))
+	allUsers := make([]model.User, 0, len(s.users))
 	for _, user := range s.users {
 		allUsers = append(allUsers, *user)
 	}
@@ -18,7 +18,7 @@ func (s *storage) FindUsers() *[]models.User {
 	return &allUsers
 }
 
-func (s *storage) CreateUser(newUser *models.User) error {
+func (s *storage) CreateUser(newUser *model.User) error {
 	users := s.FindUsers()
 	s.mu.Lock()
 	defer s.mu.Unlock()
@@ -37,7 +37,7 @@ func (s *storage) CreateUser(newUser *models.User) error {
 	return nil
 }
 
-func (s *storage) UserByUsername(username string) (*models.User, error) {
+func (s *storage) UserByUsername(username string) (*model.User, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
@@ -49,7 +49,7 @@ func (s *storage) UserByUsername(username string) (*models.User, error) {
 	return nil, fmt.Errorf("Пользователь не найден")
 }
 
-func (s *storage) UpdateUser(id uint, updateUser *models.User) error {
+func (s *storage) UpdateUser(id uint, updateUser *model.User) error {
 	users := s.FindUsers()
 	s.mu.Lock()
 	defer s.mu.Unlock()

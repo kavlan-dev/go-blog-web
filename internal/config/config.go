@@ -1,8 +1,6 @@
 package config
 
 import (
-	"encoding/json"
-	"flag"
 	"fmt"
 	"os"
 	"strconv"
@@ -10,29 +8,39 @@ import (
 )
 
 type Config struct {
-	Env   string `json:"env"` // Окружение может быть local, dev, prod
+	Env   string // Окружение может быть local, dev, prod
 	Admin struct {
-		Username string `json:"username"`
-		Password string `json:"password"`
-		Email    string `json:"email"`
-	} `json:"admin"`
+		Username string
+		Password string
+		Email    string
+	}
 	Server struct {
-		Host string `json:"host"`
-		Port uint   `json:"port"`
-	} `json:"server"`
-	CORSAllowedOrigin []string `json:"cors_allowed_origin"`
+		Host string
+		Port uint
+	}
+	CORSAllowedOrigin []string
 }
 
 func InitConfig() (*Config, error) {
-	pathCmd := flag.String(
-		"p",
-		"config/config.json",
-		"Введите относительный путь до файла конфигурации",
-	)
+	var config Config
+	config.Env = envOrDefault("ENV", "prod")
+	config.Admin.Username = envOrDefault("ADMIN_USERNAME", "admin")
+	config.Admin.Password = envOrDefault("ADMIN_PASSWORD", "admin")
+	config.Admin.Email = envOrDefault("ADMIN_EMAIL", "admin@example.com")
+	config.Server.Host = envOrDefault("SERVER_HOST", "localhost")
+	config.CORSAllowedOrigin = strings.Split(envOrDefault("CORS_ALLOWED_ORIGIN", "*"), ",")
 
-	flag.Parse()
+	port, err := strconv.Atoi(envOrDefault("SERVER_PORT", "8080"))
+	if err != nil {
+		return nil, fmt.Errorf("не верное значение порта: %s", err.Error())
+	}
+	config.Server.Port = uint(port)
 
-	return configFile(*pathCmd)
+	if config.Env != "local" && config.Env != "dev" && config.Env != "prod" {
+		return nil, fmt.Errorf("не верное значение окружения: %s", config.Env)
+	}
+
+	return &config, nil
 }
 
 // Возвращает адрес на котором запускается сервер
@@ -45,21 +53,11 @@ func (c *Config) Cors() string {
 	return strings.Join(c.CORSAllowedOrigin, ", ")
 }
 
-func configFile(path string) (*Config, error) {
-	file, err := os.Open(path)
-	if err != nil {
-		return nil, err
-	}
-	defer file.Close()
-
-	var cfg Config
-	if err := json.NewDecoder(file).Decode(&cfg); err != nil {
-		return nil, err
+func envOrDefault(varName string, defaultValue string) string {
+	value := os.Getenv(varName)
+	if value == "" {
+		value = defaultValue
 	}
 
-	if cfg.Env != "local" && cfg.Env != "dev" && cfg.Env != "prod" {
-		return nil, fmt.Errorf("Окружение %s не найдено", cfg.Env)
-	}
-
-	return &cfg, nil
+	return value
 }

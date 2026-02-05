@@ -1,12 +1,11 @@
-FROM golang:latest AS builder
+# Сборка
+FROM golang AS builder
 WORKDIR /app
-
 COPY . .
 RUN CGO_ENABLED=0 GOOS=linux go build ./cmd/app
 
-FROM alpine:latest
+# Запуск
+FROM alpine
 WORKDIR /app/
-
 COPY --from=builder /app/app .
-
 CMD ["./app"]

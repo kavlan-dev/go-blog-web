@@ -6,6 +6,7 @@ RUN CGO_ENABLED=0 GOOS=linux go build ./cmd/app
 
 # Запуск
 FROM alpine
-WORKDIR /app/
+WORKDIR /app
 COPY --from=builder /app/app .
+EXPOSE 8080
 CMD ["./app"]

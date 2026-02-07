@@ -3,7 +3,10 @@ services:
     image: go-blog-web-app
     build:
       context: .
+      dockerfile: Dockerfile
+    container_name: go-blog-web-app
     ports:
       - "8080:8080"
     env_file:
       - .env
+    restart: unless-stopped
